@@ -1,39 +1,39 @@
-console.log("Starting   server   on   port   3000");
 const express = require('express');
-const app = express();
+require('dotenv').config();
 require('./models/db');
-
 const userRouter = require('./routes/user');
 
+const User = require('./models/user');
+
+const app = express();
 
 // app.use((req, res, next) => {
-//     req.on('data', (chunk) => {
-//         const data = JSON.parse(chunk);
-//         req.body = data;
-//         next();
-//     });
-
-
-// });   // middleware))
+//   req.on('data', chunk => {
+//     const data = JSON.parse(chunk);
+//     req.body = data;
+//     next();
+//   });
+// });
 
 app.use(express.json());
-app.use(userRouter)
+app.use(userRouter);
+
+// const test = async (email, password) => {
+//   const user = await User.findOne({ email: email });
+//   const result = await user.comparePassword(password);
+//   console.log(result);
+// };
+
+// test('niraj@email.com', 'niraj12');
 
 app.get('/test', (req, res) => {
-    res.send('Hello World');
-})
-
-require('dotenv').config();
-
-
-
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>');
+  res.send('Hello world');
 });
 
-app.listen(3000, (err) => {
-    if (err) {
-        console.log("Error   starting   server");
-    }
-    console.log("Server   started   on   port   3000");
-}); 
+app.get('/', (req, res) => {
+  res.json({ success: true, message: 'Welcome to backend zone!' });
+});
+
+app.listen(8000, () => {
+  console.log('port is listening');
+});

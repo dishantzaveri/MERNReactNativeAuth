@@ -17,7 +17,7 @@ exports.validateUserSignUp = [
     .isEmpty()
     .withMessage('Password is empty!')
     .isLength({ min: 8, max: 20 })
-    .withMessage('Password must be 8 to 20 characters long!'),
+    .withMessage('Password must be 3 to 20 characters long!'),
   check('confirmPassword')
     .trim()
     .not()
@@ -30,7 +30,7 @@ exports.validateUserSignUp = [
     }),
 ];
 
-exports.userValidation = (req, res, next) => {
+exports.userVlidation = (req, res, next) => {
   const result = validationResult(req).array();
   if (!result.length) return next();
 
