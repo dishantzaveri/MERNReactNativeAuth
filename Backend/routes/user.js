@@ -16,7 +16,7 @@ const {
 
 const multer = require('multer');
 const User = require('../models/user');
-const storage = multer.memoryStorage({});
+const storage = multer.diskStorage({});
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -33,30 +33,32 @@ router.post('/sign-out', isAuth, signOut);
 router.post(
   '/upload-profile',
   isAuth,
-  uploads.single('profile'), async (req, res) => {
-    const { user } = req
-    if (!user)
-      return res
-        .status(401)
-        .json({ success: false, message: 'unauthorized access!' });
+  uploads.single('profile'),
+  uploadProfile
+  //  async (req, res) => {
+  //   const { user } = req
+  //   if (!user)
+  //     return res
+  //       .status(401)
+  //       .json({ success: false, message: 'unauthorized access!' });
 
-    try {
-      const profileBuffer = req.file.buffer;
-      const { width, height } = await sharp(profileBuffer).metadata();
-      const avatar = await sharp(profileBuffer).resize(Math.round(width * 0.5), Math.round(height * 0.5)).toBuffer()
+  //   try {
+  //     const profileBuffer = req.file.buffer;
+  //     const { width, height } = await sharp(profileBuffer).metadata();
+  //     const avatar = await sharp(profileBuffer).resize(Math.round(width * 0.5), Math.round(height * 0.5)).toBuffer()
 
-      // console.log(avatar)
+  //     // console.log(avatar)
 
 
-      await User.findByIdAndUpdate(user._id, { avatar })
-      res.status(201).json({ success: true, message: 'Your profile has updated!' })
-    }
+  //     await User.findByIdAndUpdate(user._id, { avatar })
+  //     res.status(201).json({ success: true, message: 'Your profile has updated!' })
+  //   }
 
-    catch (error) { 
-      res.status(500).json({ success: false, message: 'server error baadmai try kar!' })
-      console.log('Error while uploading profile image', error.message) }
+  //   catch (error) { 
+  //     res.status(500).json({ success: false, message: 'server error baadmai try kar!' })
+  //     console.log('Error while uploading profile image', error.message) }
 
-  }
+  // }
 
 );
 module.exports = router;

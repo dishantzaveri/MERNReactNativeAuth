@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const sharp = require('sharp');
-// const cloudinary = require('../helper/imageUpload');
+const cloudinary = require('../helper/imageUpload');
 
 exports.createUser = async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -73,13 +73,15 @@ exports.uploadProfile = async (req, res) => {
       .status(401)
       .json({ success: false, message: 'unauthorized access!' });
 
+      console.log(req.file)
+
   try {
-    // const result = await cloudinary.uploader.upload(req.file.path, {
-    //   public_id: `${user._id}_profile`,
-    //   width: 500,
-    //   height: 500,
-    //   crop: 'fill',
-    // });
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      public_id: `${user._id}_profile`,
+      width: 500,
+      height: 500,
+      crop: 'fill',
+    });
 
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
